@@ -27,12 +27,15 @@ use Composer\Semver\VersionParser;
 class InstalledVersions
 {
     /**
+<<<<<<< HEAD
      * @var string|null if set (by reflection by Composer), this should be set to the path where this class is being copied to
      * @internal
      */
     private static $selfDir = null;
 
     /**
+=======
+>>>>>>> 9f08039065663b2fc46a13d9c16e217be760cf38
      * @var mixed[]|null
      * @psalm-var array{root: array{name: string, pretty_version: string, version: string, reference: string|null, type: string, install_path: string, aliases: string[], dev: bool}, versions: array<string, array{pretty_version?: string, version?: string, reference?: string|null, type?: string, install_path?: string, aliases?: string[], dev_requirement: bool, replaced?: string[], provided?: string[]}>}|array{}|null
      */
@@ -329,6 +332,7 @@ class InstalledVersions
     }
 
     /**
+<<<<<<< HEAD
      * @return string
      */
     private static function getSelfDir()
@@ -341,6 +345,8 @@ class InstalledVersions
     }
 
     /**
+=======
+>>>>>>> 9f08039065663b2fc46a13d9c16e217be760cf38
      * @return array[]
      * @psalm-return list<array{root: array{name: string, pretty_version: string, version: string, reference: string|null, type: string, install_path: string, aliases: string[], dev: bool}, versions: array<string, array{pretty_version?: string, version?: string, reference?: string|null, type?: string, install_path?: string, aliases?: string[], dev_requirement: bool, replaced?: string[], provided?: string[]}>}>
      */
@@ -354,7 +360,11 @@ class InstalledVersions
         $copiedLocalDir = false;
 
         if (self::$canGetVendors) {
+<<<<<<< HEAD
             $selfDir = self::getSelfDir();
+=======
+            $selfDir = strtr(__DIR__, '\\', '/');
+>>>>>>> 9f08039065663b2fc46a13d9c16e217be760cf38
             foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
                 $vendorDir = strtr($vendorDir, '\\', '/');
                 if (isset(self::$installedByVendor[$vendorDir])) {
