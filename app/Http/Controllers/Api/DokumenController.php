@@ -469,36 +469,47 @@ public function getMahasiswaList()
     /**
      * Download dokumen (Mahasiswa & Dosen)
      */
-    public function download($id)
-    {
-        $dokumen = Dokumen::find($id);
+  public function download($id)
+{
+    $dokumen = Dokumen::find($id);
 
-        if (!$dokumen) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Dokumen tidak ditemukan',
-            ], 404);
-        }
-
-        // Cek authorization: hanya mahasiswa pemilik atau dosen pembimbing
-        if (Auth::id() != $dokumen->mahasiswa_id && Auth::id() != $dokumen->dosen_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak memiliki akses untuk mengunduh dokumen ini',
-            ], 403);
-        }
-
-        // Gunakan Storage agar kompatibel lintas environment dan set nama file download sesuai yang tersimpan
-        if (!Storage::disk('public')->exists($dokumen->file_path)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'File tidak ditemukan di server',
-            ], 404);
-        }
-
-        $downloadName = basename($dokumen->file_path);
-        return Storage::disk('public')->download($dokumen->file_path, $downloadName);
+    if (!$dokumen) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Dokumen tidak ditemukan',
+        ], 404);
     }
+
+    // Cek authorization
+    if (Auth::id() != $dokumen->mahasiswa_id && Auth::id() != $dokumen->dosen_id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tidak memiliki akses untuk mengunduh dokumen ini',
+        ], 403);
+    }
+
+    $disk = Storage::disk('public');
+
+    if (! $disk->exists($dokumen->file_path)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'File tidak ditemukan di server',
+        ], 404);
+    }
+
+    $filePath = $disk->path($dokumen->file_path);
+    $mimeType = mime_content_type($filePath);
+
+    return response()->download(
+        $filePath,
+        basename($dokumen->file_path),
+        [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'attachment; filename="'.basename($dokumen->file_path).'"'
+        ]
+    );
+}
+
 
     /**
      * Get detail dokumen

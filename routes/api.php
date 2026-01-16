@@ -184,7 +184,7 @@
         | DOKUMEN - MAHASISWA
         |--------------------------------------------------------------------------
         */
-        Route::middleware('auth')->prefix('dokumen')->group(function () {
+        Route::prefix('dokumen')->group(function () {
             // Get semua dokumen mahasiswa
             Route::get('/', [DokumenController::class, 'index']);
                 Route::get('/progress', [DokumenController::class, 'progress']);

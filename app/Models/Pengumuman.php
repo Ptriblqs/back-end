@@ -14,15 +14,17 @@ class Pengumuman extends Model
         'judul',
         'isi',
         'attachment',
+        'attachment_name', 
         'tgl_mulai',
         'tgl_selesai'
     ];
+    
     protected $table = 'pengumuman';
 
     protected $casts = [
-    'tgl_mulai' => 'date',
-    'tgl_selesai' => 'date',
-];
+        'tgl_mulai' => 'date',
+        'tgl_selesai' => 'date',
+    ];
 
     public function user()
     {
